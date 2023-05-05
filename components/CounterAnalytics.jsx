@@ -3,6 +3,14 @@ import Head from "next/head";
 
 const CounterAnalytics = ({ id, utcoffset, server }) => {
   useEffect(() => {
+    const id = process.env.MAGLIT_COUNTER_ID;
+    const utcoffset = process.env.MAGLIT_COUNTER_UTCOFFSET || "6";
+    const server = process.env.MAGLIT_COUNTER_SERVER || "https://t.counter.dev";
+
+    if (!id || sessionStorage.getItem("doNotTrack") || localStorage.getItem("doNotTrack")) {
+      return;
+    }
+
     if (
       !sessionStorage.getItem("_swa") &&
       !document.referrer.startsWith(location.protocol + "//" + location.host)
@@ -18,6 +26,7 @@ const CounterAnalytics = ({ id, utcoffset, server }) => {
           })
       );
     }
+
     sessionStorage.setItem("_swa", "1");
   }, []);
 
@@ -29,4 +38,3 @@ const CounterAnalytics = ({ id, utcoffset, server }) => {
 };
 
 export default CounterAnalytics;
-
