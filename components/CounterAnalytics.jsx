@@ -1,19 +1,20 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
 
-const CounterAnalytics = () => {
+const CounterAnalytics = ({ id, utcoffset, server }) => {
   useEffect(() => {
     if (
       !sessionStorage.getItem("_swa") &&
-      document.referrer.indexOf(location.protocol + "//" + location.host) !== 0
+      !document.referrer.startsWith(location.protocol + "//" + location.host)
     ) {
       fetch(
-        "https://counter.dev/track?" +
+        server +
+          "/track?" +
           new URLSearchParams({
             referrer: document.referrer,
             screen: screen.width + "x" + screen.height,
-            user: "maglit-admin@protonmail.com",
-            utcoffset: "6",
+            id: id,
+            utcoffset: utcoffset,
           })
       );
     }
@@ -28,3 +29,4 @@ const CounterAnalytics = () => {
 };
 
 export default CounterAnalytics;
+
